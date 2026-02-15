@@ -1,0 +1,232 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-14T04:14:27.654Z",
+  "summary": "Diff adds a Motoko backend actor with basic data models and some role-check helpers, plus a React app shell with routes, layout (header/sidebar/footer), and a set of dialogs/pages/hooks for admissions/staff/finance/exams/SMS/admin. However, many BuildRequest requirements are either not implemented or only partially addressed (notably: username/password auth, offline-first queue+sync, complete module workflows/reporting/export, backup/restore implementation, audit trail UI+backend methods, and generated static image assets). The diff also appears to implement Internet Identity + Principal-based user creation, which conflicts with the requested username/password authentication.",
+  "missing_requirements": [
+    {
+      "id": "REQ-1",
+      "requirement": "Username/password login, change password, logout, and strict role-based enforcement across all modules and backend methods for Headmaster/Accountant/Exams Coordinator.",
+      "reason": "Frontend is wired to Internet Identity identity presence (principal-based) rather than username/password login; user creation uses Principal ID. Backend excerpt shows access-control mixins and appRole checks but does not evidence username/password auth, password storage/change, or full enforcement across all module methods (truncated).",
+      "evidence": [
+        "frontend/src/App.tsx",
+        "frontend/src/hooks/useInternetIdentity (referenced in frontend/src/App.tsx)",
+        "frontend/src/components/admin/UserFormDialog.tsx",
+        "backend/main.mo (truncated)"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "requirement": "Headmaster-only user management: create user with username + initial password, edit role + enable/disable, and reset passwords; non-Headmaster blocked from UI and backend methods.",
+      "reason": "User form requires a Principal ID and does not include username/password or reset password flows. Enable/disable and reset password functionality are not evidenced. Backend methods for these operations are not shown in the truncated backend file.",
+      "evidence": [
+        "frontend/src/components/admin/UserFormDialog.tsx",
+        "backend/main.mo (truncated)"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "requirement": "Dashboard with branding/logo placeholder, quick statistics that update, role-based sidebar using module icons, and footer with provided contact details.",
+      "reason": "Sidebar exists and is role-filtered, and footer contains contact info, but the diff does not show the Dashboard page rendering the required logo placeholder image or the requested module icons from generated static assets; dashboard content itself is not included in the diff summary.",
+      "evidence": [
+        "frontend/src/components/layout/SidebarNav.tsx",
+        "frontend/src/components/layout/Footer.tsx",
+        "frontend/src/hooks/useDashboardStats.ts",
+        "frontend/src/App.tsx (routes reference DashboardPage, but page content not shown)"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "requirement": "Admissions: full New Admission CRUD with auto Student ID, parent details, photo upload, search, printable student record; transfer workflow; dismissal workflow with approval section.",
+      "reason": "Student form shows a subset of fields and photo upload, and auto-generates an ID via `STU${Date.now()}`; however, transfer workflow, dismissal workflow with approval section, search, and a printable admission profile are not evidenced in the shown files.",
+      "evidence": [
+        "frontend/src/components/admissions/StudentFormDialog.tsx",
+        "backend/main.mo (Student type has limited fields; truncated)"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "requirement": "Classes + Parents: class list with teacher, student list + total, parents list linked to students with address, search/filter, printable class list, export to PDF/Excel.",
+      "reason": "Routes for classes/parents exist, but the diff summary does not show implementations for class CRUD/teacher assignment, student lists/counts, parent-to-student relationships, print views, or PDF/Excel export.",
+      "evidence": [
+        "frontend/src/App.tsx (routes for Classes/Parents)",
+        "backend/main.mo (no Class/Parent models shown; truncated)"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "requirement": "Staff module: staff CRUD with photo, staff transfer + dismissal records, and searchable staff directory.",
+      "reason": "Staff form supports basic fields and photo, but transfer/dismissal record capture and directory search are not evidenced in the shown diff summary.",
+      "evidence": [
+        "frontend/src/components/staff/StaffFormDialog.tsx",
+        "backend/main.mo (Staff type has no transfer/dismissal record structures; truncated)"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "requirement": "Finance module: revenues (fees/canteen/store), expenses categories, fee balances linked to student/class, receipt generation + printing, reports (monthly/termly/annual/P&L) with charts, printable outputs.",
+      "reason": "Financial records in backend/frontend appear to be generic amount/description with revenue/expense, without fee-specific fields (amount due/paid/balance, student/class link), receipts, category structures, reporting periods, or charts evidenced.",
+      "evidence": [
+        "backend/main.mo (FinancialRecord type)",
+        "frontend/src/components/finance/FinancialRecordFormDialog.tsx",
+        "frontend/src/App.tsx (ReceiptPage/ReportsPage routes referenced, content not shown)"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "requirement": "Exams: marks recording with computed totals, grades, positions; report card, class performance summary, subject analysis; printable report cards; export to PDF.",
+      "reason": "Marks entry dialog only records a single `marks` value and assigns a hard-coded position (1) with a comment indicating it is not calculated; no evidence of totals, class-wide position calculation, report-card generation/printing, class/subject analytics, or PDF export implementation.",
+      "evidence": [
+        "frontend/src/components/exams/MarksEntryFormDialog.tsx",
+        "backend/main.mo (ExamRecord type has no total/CA vs exam breakdown; truncated)"
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "requirement": "SMS module: individual + bulk messages to target groups (class/all parents/outstanding fees), templates, admin-triggerable automated alerts, history log with status/timestamp, and clearly labeled simulated sending when real sending not possible.",
+      "reason": "Templates file exists, and routes for SMS pages exist, but the diff summary does not show compose UI, recipient targeting groups, simulated send labeling, automated alert triggers, or history/status logging UI/backend methods (backend SMSLog type is minimal and not linked to entities/groups).",
+      "evidence": [
+        "frontend/src/components/sms/SMSTemplates.ts",
+        "frontend/src/App.tsx (SMS routes)",
+        "backend/main.mo (SMSLog type; truncated)"
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "requirement": "Offline-first: cached assets for offline navigation, view previously loaded records offline, queue creates/edits locally with pending markers, and sync on reconnect.",
+      "reason": "Only an offline status banner is evidenced; no service worker/caching strategy, local queue storage, pending markers, or sync-on-reconnect logic is shown.",
+      "evidence": [
+        "frontend/src/components/offline/OfflineStatusBanner.tsx",
+        "frontend/src/components/layout/AppLayout.tsx"
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "requirement": "Backup/restore/export full dataset with authorized access and a UI backup reminder; restore should update dashboard stats.",
+      "reason": "A backup reminder banner exists, but no evidence is shown for actual export/download or restore/import flows (frontend pages are referenced but not shown; backend export/restore methods are not evidenced in the truncated backend).",
+      "evidence": [
+        "frontend/src/components/admin/BackupReminderBanner.tsx",
+        "frontend/src/App.tsx (BackupRestorePage route referenced)",
+        "backend/main.mo (truncated)"
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "requirement": "Security: backend-enforced role permissions, audit trail for key actions, Headmaster-only audit UI, auto-logout after inactivity, and no plaintext passwords / encryption where feasible.",
+      "reason": "Audit log types/vars exist but no evidence of audit log recording on actions or audit view implementation; auto-logout hook is referenced but not shown; password security/encryption is not evidenced (and username/password auth is not evidenced).",
+      "evidence": [
+        "backend/main.mo (AuditLog type and auditLogs var; truncated)",
+        "frontend/src/App.tsx (useAutoLogout referenced)",
+        "frontend/src/App.tsx (AuditTrailPage route referenced, content not shown)"
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "requirement": "Persist data models with relationships (Students-Parents-Classes-Staff-Finance-Exams-SMS) and expose CRUD/query methods to support dashboards/reports with integrity.",
+      "reason": "Backend shows only simplified models and maps, with Student containing parent fields inline rather than explicit relationships; no Class/Parent entities are evidenced; finance/exams records are not linked to classes; SMS logs are not linked to groups/entities; CRUD/query methods are not shown in the truncated backend excerpt.",
+      "evidence": [
+        "backend/main.mo (truncated)"
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "requirement": "Professional school-themed visual design with consistent layout, icons, and explicitly not blue/purple-dominant palette.",
+      "reason": "Layout components exist, but the diff summary does not provide evidence about the palette choice (no theme/tokens shown). Also, module iconography requirement specifically calls for generated static icons; the sidebar currently uses Lucide icons.",
+      "evidence": [
+        "frontend/src/components/layout/AppLayout.tsx",
+        "frontend/src/components/layout/SidebarNav.tsx"
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "requirement": "Generated static image assets under frontend/public/assets/generated for logo placeholder and module icons, referenced by the UI (not served via backend).",
+      "reason": "No generated image assets under `frontend/public/assets/generated` are shown in the diff summary, and the sidebar uses Lucide icons rather than static generated images.",
+      "evidence": [
+        "frontend/src/components/layout/SidebarNav.tsx"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Internet Identity (principal-based) authentication flow instead of the requested username/password login.",
+      "reason": "BuildRequest explicitly requires username/password login/change-password; diff uses `useInternetIdentity` and requires `identity` to access the app, and user creation requests a Principal ID.",
+      "evidence": [
+        "frontend/src/App.tsx",
+        "frontend/src/hooks/useActor.ts",
+        "frontend/src/components/admin/UserFormDialog.tsx"
+      ]
+    },
+    {
+      "description": "Secret URL parameter `caffeineAdminToken` used to initialize access control.",
+      "reason": "BuildRequest does not mention any secret admin token passed via URL parameters for initializing authorization.",
+      "evidence": [
+        "frontend/src/hooks/useActor.ts"
+      ]
+    },
+    {
+      "description": "Footer attribution link to caffeine.ai (and a heart symbol in user-facing text).",
+      "reason": "BuildRequest specifies footer content fields (location/address/email/headmaster/telephone) but does not request external attribution text/link; also introduces a non-requested symbol in user-facing text.",
+      "evidence": [
+        "frontend/src/components/layout/Footer.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.64,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/admin/BackupReminderBanner.tsx",
+    "frontend/src/components/admin/UserFormDialog.tsx",
+    "frontend/src/components/admissions/StudentFormDialog.tsx",
+    "frontend/src/components/auth/LogoutButton.tsx",
+    "frontend/src/components/auth/RequireRole.tsx",
+    "frontend/src/components/exams/MarksEntryFormDialog.tsx",
+    "frontend/src/components/files/PhotoUploader.tsx",
+    "frontend/src/components/finance/FinancialRecordFormDialog.tsx",
+    "frontend/src/components/layout/AppLayout.tsx",
+    "frontend/src/components/layout/Footer.tsx",
+    "frontend/src/components/layout/Header.tsx",
+    "frontend/src/components/layout/SidebarNav.tsx",
+    "frontend/src/components/offline/OfflineStatusBanner.tsx",
+    "frontend/src/components/sms/SMSTemplates.ts",
+    "frontend/src/components/staff/StaffFormDialog.tsx",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useCurrentUser.ts",
+    "frontend/src/hooks/useDashboardStats.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/index.css",
+    "frontend/src/main.tsx",
+    "frontend/src/offline/useOfflineStatus.ts",
+    "frontend/src/pages/ChangePasswordPage.tsx",
+    "frontend/src/pages/DashboardPage.tsx",
+    "frontend/src/pages/LoginPage.tsx",
+    "frontend/src/pages/admin/AuditTrailPage.tsx",
+    "frontend/src/pages/admin/BackupRestorePage.tsx",
+    "frontend/src/pages/admin/UserManagementPage.tsx",
+    "frontend/src/pages/admissions/AdmissionsPage.tsx",
+    "frontend/src/pages/admissions/StudentDetailPage.tsx",
+    "frontend/src/pages/classes/ClassDetailPage.tsx",
+    "frontend/src/pages/classes/ClassesPage.tsx",
+    "frontend/src/pages/classes/ParentsPage.tsx",
+    "frontend/src/pages/exams/AnalyticsPage.tsx",
+    "frontend/src/pages/exams/ExamsPage.tsx",
+    "frontend/src/pages/exams/StudentReportCardPage.tsx",
+    "frontend/src/pages/finance/FinancePage.tsx",
+    "frontend/src/pages/finance/ReceiptPage.tsx",
+    "frontend/src/pages/finance/ReportsPage.tsx",
+    "frontend/src/pages/sms/SMSHistoryPage.tsx",
+    "frontend/src/pages/sms/SMSPage.tsx",
+    "frontend/src/pages/staff/StaffDetailPage.tsx",
+    "frontend/src/pages/staff/StaffDirectoryPage.tsx",
+    "frontend/src/security/useAutoLogout.ts",
+    "frontend/src/utils/export.ts",
+    "frontend/src/utils/urlParams.ts",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

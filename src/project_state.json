@@ -1,0 +1,211 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Offline-capable school database management system for Mark Finley Adventist Preparatory School (Windows desktop or local web app) with role-based access, dashboards, admissions, classes/parents, staff, finance, exams, SMS notifications, reporting, and offline backup/restore for LAN multi-user use.",
+  "architectural_notes": [
+    "Offline-first system running on a single PC or local server with no internet dependency",
+    "Local database required (e.g., SQLite or MySQL) with proper relational schema for students/parents/classes/staff/finance/exams/SMS logs",
+    "Role-based access control with separate module permissions per role (Headmaster full; Accountant finance-only; Exams Coordinator exams-only)",
+    "Support LAN multi-user usage within the school environment",
+    "Backup/restore and data export to external drive; include a system restore option",
+    "SMS delivery via GSM modem for offline sending; optionally integrate an SMS API when internet is available",
+    "Security: encryption for sensitive data, audit logging of user actions, inactivity auto-logout, backup reminders"
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- School logo placeholder emblem, clean academic style (mfaps-logo-placeholder.dim_512x512.png)\n- Admission module icon, school admissions theme (icon-admissions.dim_128x128.png)\n- Classes module icon, classroom/book theme (icon-classes.dim_128x128.png)\n- Staff module icon, teacher/staff theme (icon-staff.dim_128x128.png)\n- Finance module icon, accounting/money theme (icon-finance.dim_128x128.png)\n- Exams module icon, exam/paper theme (icon-exams.dim_128x128.png)\n- SMS module icon, messaging theme (icon-sms.dim_128x128.png)",
+  "existing_features": [
+    {
+      "id": "feature-implement-secure-role-based-authentication-with-the-roles-headmaster-accountant-and-exams-coordinator-including-username-password-login-change-password-logout-and-role-based-access-enforcement-across-all-modules",
+      "title": "Implement secure role-based authentication with the roles Headmaster, Accountant, and Exams Coordinator, including username/password login, change password, logout, and role-based access enforcement across all modules.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-headmaster-only-user-management-to-create-edit-disable-and-reset-passwords-for-system-users-assigning-one-of-the-supported-roles-to-each-user",
+      "title": "Add Headmaster-only user management to create, edit, disable, and reset passwords for system users, assigning one of the supported roles to each user.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-the-post-login-main-dashboard-with-school-branding-placeholders-and-quick-statistics-plus-a-sidebar-navigation-with-large-buttons-and-module-icons",
+      "title": "Create the post-login main dashboard with school branding placeholders and quick statistics, plus a sidebar navigation with large buttons and module icons.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-admission-management-module-with-a-new-admission-crud-including-auto-generated-student-id-parent-details-photo-upload-search-and-printable-student-record-b-transfer-workflow-and-c-dismissal-workflow-including-an-approval-section",
+      "title": "Implement Admission Management module with (A) New Admission CRUD including auto-generated Student ID, parent details, photo upload, search, and printable student record; (B) Transfer workflow; and (C) Dismissal workflow including an approval section.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-class-management-module-with-class-list-class-name-class-teacher-student-list-total-count-and-parents-list-parent-name-phone-number-linked-students-address-including-search-filter-printable-class-list-and-export-to-pdf-excel",
+      "title": "Implement Class Management module with class list (class name, class teacher, student list, total count) and parents list (parent name, phone number, linked students, address), including search/filter, printable class list, and export to PDF/Excel.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-staff-management-module-with-staff-crud-including-photo-upload-staff-transfer-records-staff-dismissal-records-and-a-searchable-staff-directory",
+      "title": "Implement Staff Management module with staff CRUD (including photo upload), staff transfer records, staff dismissal records, and a searchable staff directory.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-finance-management-module-headmaster-accountant-only-to-record-revenue-school-fees-canteen-collection-school-store-sales-track-expenses-generate-receipts-for-school-fee-payments-and-produce-financial-reports-monthly-termly-annual-profit-loss-including-printable-reports-and-charts-graphs",
+      "title": "Implement Finance Management module (Headmaster + Accountant only) to record revenue (school fees, canteen collection, school store sales), track expenses, generate receipts for school fee payments, and produce financial reports (monthly, termly, annual, profit & loss) including printable reports and charts/graphs.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-exams-management-module-headmaster-exams-coordinator-only-for-marks-recording-with-auto-calculated-totals-grades-positions-remarks-and-report-generation-including-student-report-card-class-performance-summary-subject-analysis-printable-report-cards-and-export-to-pdf",
+      "title": "Implement Exams Management module (Headmaster + Exams Coordinator only) for marks recording with auto-calculated totals, grades, positions, remarks, and report generation including student report card, class performance summary, subject analysis, printable report cards, and export to PDF.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-sms-notification-module-ui-and-backend-logging-support-composing-individual-and-bulk-messages-to-targeted-groups-entire-class-all-parents-students-with-outstanding-fees-templates-automated-alert-triggers-sms-history-log-delivery-status-and-date-time-sent-where-direct-sending-is-not-possible-in-browser-provide-a-clearly-labeled-send-simulated-mode-that-records-to-history-and-marks-status-accordingly",
+      "title": "Add SMS Notification module UI and backend logging: support composing individual and bulk messages to targeted groups (entire class, all parents, students with outstanding fees), templates, automated alert triggers, SMS history log, delivery status, and date/time sent. Where direct sending is not possible in-browser, provide a clearly labeled 'Send (Simulated)' mode that records to history and marks status accordingly.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-offline-first-behavior-suitable-for-a-local-deployment-the-frontend-must-remain-usable-without-an-internet-connection-for-viewing-previously-loaded-data-and-for-queuing-data-entry-actions-and-must-sync-queued-actions-when-connectivity-is-restored",
+      "title": "Implement offline-first behavior suitable for a local deployment: the frontend must remain usable without an internet connection for viewing previously loaded data and for queuing data-entry actions, and must sync queued actions when connectivity is restored.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-backup-restore-and-export-features-allow-an-authorized-user-to-export-the-full-dataset-to-a-file-restore-from-an-exported-file-and-show-a-backup-reminder-in-the-ui",
+      "title": "Add backup, restore, and export features: allow an authorized user to export the full dataset to a file, restore from an exported file, and show a backup reminder in the UI.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-security-features-role-based-permissions-enforced-in-backend-audit-trail-of-user-activities-across-modules-automatic-logout-after-inactivity-and-encryption-of-sensitive-stored-data-where-feasible-within-the-platform",
+      "title": "Implement security features: role-based permissions (enforced in backend), audit trail of user activities across modules, automatic logout after inactivity, and encryption of sensitive stored data where feasible within the platform.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-coherent-professional-school-themed-visual-design-across-the-app-colors-typography-layout-with-sidebar-navigation-clear-section-headers-and-consistent-iconography-do-not-use-a-blue-purple-primary-palette",
+      "title": "Apply a coherent, professional school-themed visual design across the app (colors, typography, layout) with sidebar navigation, clear section headers, and consistent iconography; do not use a blue/purple primary palette.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-generated-static-image-assets-for-a-logo-placeholder-and-module-icons-and-render-them-from-frontend-static-assets-do-not-serve-images-through-the-backend",
+      "title": "Add generated static image assets for a logo placeholder and module icons, and render them from frontend static assets (do not serve images through the backend).",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Implement secure role-based authentication (Headmaster, Accountant, Exams Coordinator) with change password, logout, role-based dashboards, and user management",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Build main dashboard UI with school branding placeholders, quick statistics, and sidebar navigation",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Admission management module: new admission (auto student ID, parent details, photo), transfer, dismissal, and CRUD/print/search",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Class management module: class list, student lists/counts, parents list, search/filter, print, export to PDF/Excel",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Staff management module: staff records with photo, transfers, dismissals, staff directory and search",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Finance management module (Headmaster/Accountant only): fees & other revenue, expenses tracking, receipts, reports, charts/graphs",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Exams management module (Headmaster/Exams Coordinator only): marks entry, auto totals/grades/positions, report cards, analytics, PDF export/printing",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "SMS notification system: individual/bulk/automated alerts, GSM modem offline sending + optional online SMS API, history log and delivery status",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Offline-first deployment: local database storage, Windows installability, LAN multi-user support, backup/restore, export to external drive, system restore",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Security and audit features: role permissions, data encryption, audit trail, auto-logout on inactivity, backup reminders",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Professional school-themed responsive UI: buttons/icons per module, school colors, footer contact details, tablet/desktop responsiveness",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-24",
+      "summary": "Model and persist data with proper relationships between Students, Parents, Classes, Staff, Finance records, Exams, and SMS logs, ensuring data integrity and scalable querying for dashboards and reports.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Mark Finley Adventist Preparatory School Offline Database Management System",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

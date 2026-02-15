@@ -1,0 +1,605 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Offline-first School DBMS (Frontend) with Role-Based Access, Modules, and Sync UX",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Implement role-based authentication UX (login/logout/change password) and role-based access enforcement in the UI across modules.",
+      "acceptanceCriteria": [
+        "User can log in using username and password.",
+        "User can change their password and then log in with the new password.",
+        "User can log out and is returned to the login screen.",
+        "Headmaster can access all modules and all CRUD/report actions.",
+        "Accountant can only access Finance module screens and related API methods; all other modules are blocked/hidden.",
+        "Exams Coordinator can only access Exams module screens and related API methods; all other modules are blocked/hidden.",
+        "Unauthorized API calls are rejected on the backend based on role (not just hidden in the UI)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Add application shell with authenticated/unauthenticated routing, and central role-based route gating (Headmaster/Accountant/Exams Coordinator) based on backend caller profile/role. Use the authorization component concepts (role-based access control) for UI gating patterns; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/LoginPage.tsx",
+          "operation": "create",
+          "description": "Create login screen supporting username/password UX (and wiring to existing auth mechanism), plus Internet Identity login button if already used by the app; clearly show auth status/errors and route to dashboard after successful authentication. Use the authorization component guidance for login/logout flows and cache clearing; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/ChangePasswordPage.tsx",
+          "operation": "create",
+          "description": "Add change-password UI and client-side validation, wired to the available backend capability (or a best-effort fallback if platform auth differs). Ensure success leads to re-authentication when required. Use the authorization component error-handling guidance; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/RequireRole.tsx",
+          "operation": "create",
+          "description": "Create a wrapper component that blocks navigation and renders an Access Denied view when the current user role/appRole is insufficient for the requested module. Use the authorization component access-control UI guidance; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/LogoutButton.tsx",
+          "operation": "create",
+          "description": "Add logout button that clears cached application data (React Query cache, offline cache markers if applicable) and returns user to login screen. Use the authorization component guidance for clearing cached application data on logout; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useCurrentUser.ts",
+          "operation": "create",
+          "description": "Add a hook that fetches and caches current user profile and roles (caller user profile + role/appRole) using react-query and useActor, with resilient loading states to avoid UI flash. Use the authorization component guidance for preventing profile setup modal flash; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useActor.ts",
+          "operation": "modify",
+          "description": "Ensure actor initialization and authentication state transitions are handled cleanly for UI gating; keep query invalidation behavior consistent with login/logout to prevent stale protected data being shown."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Add Headmaster-only user management UI for creating/editing/disabling users and resetting passwords, with role assignment.",
+      "acceptanceCriteria": [
+        "Headmaster can create a new user with username, initial password, and role.",
+        "Headmaster can edit a user's role and enable/disable the account.",
+        "Headmaster can reset a user's password.",
+        "Non-Headmaster roles cannot access user management UI or backend methods."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/admin/UserManagementPage.tsx",
+          "operation": "create",
+          "description": "Implement Headmaster-only user management screen: list users, create user, edit role/active status, disable user, reset password. Gate access via RequireRole. Use shadcn-ui building blocks for forms, dialogs, tables, and toasts; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useUsers.ts",
+          "operation": "create",
+          "description": "Add react-query hooks for fetching and mutating users (list/create/update/disable/reset) with consistent invalidation and role-based error handling. Use the authorization component guidance for handling backend authorization failures gracefully; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/admin/UserFormDialog.tsx",
+          "operation": "create",
+          "description": "Create reusable create/edit user dialog with role selector and active toggle; include validation and clear English labels. Use shadcn-ui Dialog/Form components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire User Management route into the authenticated app shell and sidebar navigation, visible only to Headmaster."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Create post-login main dashboard with branding placeholders, quick statistics, and role-aware sidebar navigation with large icon buttons.",
+      "acceptanceCriteria": [
+        "Dashboard displays: 'Mark Finley Adventist Preparatory School' and a logo placeholder area.",
+        "Dashboard shows welcome message including the logged-in user role/name.",
+        "Dashboard shows the listed statistics and updates when underlying data changes.",
+        "Sidebar shows navigation items for the modules permitted by the current user's role.",
+        "UI is responsive for desktop and tablet and uses large, clearly labeled buttons with icons.",
+        "Footer shows: location, postal address, email, headmaster name, and telephone as provided by the user."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/DashboardPage.tsx",
+          "operation": "create",
+          "description": "Implement dashboard view with school name, logo placeholder image, welcome message from current user profile, and quick stats (students/staff/classes/fees collected/outstanding) fetched from backend data. Use shadcn-ui Cards and responsive layout primitives; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/layout/AppLayout.tsx",
+          "operation": "create",
+          "description": "Create shared layout (sidebar + header + footer) used across authenticated pages, with responsive behavior for desktop/tablet and large navigation buttons."
+        },
+        {
+          "path": "frontend/src/components/layout/SidebarNav.tsx",
+          "operation": "create",
+          "description": "Add sidebar navigation with large labeled buttons and module icons; show/hide items based on current user's allowed modules. Use shadcn-ui Button and navigation patterns; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/layout/Footer.tsx",
+          "operation": "create",
+          "description": "Add footer containing the required school contact details in English, consistently rendered across pages."
+        },
+        {
+          "path": "frontend/src/hooks/useDashboardStats.ts",
+          "operation": "create",
+          "description": "Compute dashboard statistics from available backend records (students, staff, finance records) and keep them updated via react-query invalidation after mutations."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Register the dashboard route as the default post-login view and ensure it uses AppLayout."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Implement Admission Management UI: student CRUD (with photo), search, printable record, transfer workflow, and dismissal workflow with approval capture.",
+      "acceptanceCriteria": [
+        "Creating a student auto-generates a unique Student ID.",
+        "Student record supports fields listed in the request including storing a photo.",
+        "User can Save/Edit/Delete/Search student admissions (subject to role permissions; Headmaster full access).",
+        "Print action produces a printable student admission profile view (browser print is acceptable).",
+        "Transfer records can be created and viewed with: student name, class, transfer date, destination, reason.",
+        "Dismissal records can be created and viewed with: student name, class, date, reason, and an approval section captured/stored."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/admissions/AdmissionsPage.tsx",
+          "operation": "create",
+          "description": "Create Admissions module landing page with searchable student list, actions (create/edit/delete/print/transfer/dismiss) subject to role gating. Use shadcn-ui Table, Input, Button, and Dialog components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/admissions/StudentDetailPage.tsx",
+          "operation": "create",
+          "description": "Add student detail/profile view with printable layout and browser print support; include photo display via ExternalBlob direct URL when present. Use blob-storage ExternalBlob handling for image rendering; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/admissions/StudentForm.tsx",
+          "operation": "create",
+          "description": "Implement student create/edit form including required fields and photo upload UI. Use shadcn-ui Form components; verify the component's usage instructions before implementing. Use blob-storage ExternalBlob for photo upload handling; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/admissions/StudentActions.tsx",
+          "operation": "create",
+          "description": "Provide action controls (save/edit/delete/print/search/transfer/dismiss) with role-based enable/disable and offline pending indicators integration."
+        },
+        {
+          "path": "frontend/src/hooks/useStudents.ts",
+          "operation": "create",
+          "description": "Add react-query hooks for student list/detail + mutations (create/update/delete/transfer/dismiss) with invalidation and authorization error handling (Access Denied messaging). Use the authorization component guidance for error handling; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/files/PhotoUploader.tsx",
+          "operation": "create",
+          "description": "Reusable photo upload component producing/accepting blob-storage ExternalBlob and showing preview/progress. Use blob-storage ExternalBlob upload progress capability; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire Admissions routes into navigation and apply role gating (Headmaster only if required by policy; otherwise include permitted roles per final access rules)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Implement Class Management UI with class list/detail and parents list, including search/filter, print, and export (PDF/Excel-compatible).",
+      "acceptanceCriteria": [
+        "User can create/edit/view classes and assign a class teacher.",
+        "Class detail view displays student list and total count.",
+        "Parents list view shows each parent and linked student(s).",
+        "Search and filtering work on class list and parents list.",
+        "Print class list produces a printer-friendly layout.",
+        "Export functions produce downloadable files for PDF and Excel-compatible format (e.g., .csv for Excel)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/classes/ClassesPage.tsx",
+          "operation": "create",
+          "description": "Implement class list view with search/filter and navigation to class details; include print and export actions. Use shadcn-ui Table and Button components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/classes/ClassDetailPage.tsx",
+          "operation": "create",
+          "description": "Implement class detail view showing class teacher, student list, and total count with printer-friendly layout option."
+        },
+        {
+          "path": "frontend/src/pages/classes/ParentsPage.tsx",
+          "operation": "create",
+          "description": "Implement parents list view showing parent name, phone, linked students, and address; include search/filter."
+        },
+        {
+          "path": "frontend/src/utils/export.ts",
+          "operation": "create",
+          "description": "Add utilities to export table data to CSV (Excel-compatible) and a basic PDF export/print workflow (where PDF is implemented via print-to-PDF guidance or client-side generation)."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire Classes and Parents routes into sidebar navigation with proper role gating."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Implement Staff Management UI with staff CRUD (photo), transfer/dismissal records, and searchable directory.",
+      "acceptanceCriteria": [
+        "User can create/edit/delete/view staff records with all requested fields including photo.",
+        "User can record staff transfers with from/to position and date.",
+        "User can record staff dismissals with date and reason.",
+        "Staff directory supports search (by name and position at minimum)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/staff/StaffDirectoryPage.tsx",
+          "operation": "create",
+          "description": "Create searchable staff directory with filters for name/position and quick actions to view/edit staff. Use shadcn-ui Table/Input components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/staff/StaffDetailPage.tsx",
+          "operation": "create",
+          "description": "Add staff detail view showing profile info, status, and photo via ExternalBlob direct URL. Use blob-storage ExternalBlob rendering; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/staff/StaffForm.tsx",
+          "operation": "create",
+          "description": "Implement staff create/edit form with photo upload and required fields. Use shadcn-ui Form components; verify the component's usage instructions before implementing. Use blob-storage ExternalBlob for photo upload; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useStaff.ts",
+          "operation": "create",
+          "description": "Add react-query hooks for staff list/detail + create/update/delete + status changes (transfer/dismiss) with invalidation and authorization error handling. Use authorization component error-handling guidance; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire Staff module routes into sidebar navigation with role gating."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Implement Finance Management UI (Headmaster + Accountant) for revenue/expenses entry, receipts, reports, print, and charts.",
+      "acceptanceCriteria": [
+        "Only Headmaster and Accountant can access finance UI and backend methods.",
+        "School fees records store amount due, amount paid, auto-calculated balance, payment date, and link to a student/class.",
+        "Receipt view can be generated for a fee payment and printed.",
+        "Canteen and store entries support daily records and monthly summaries.",
+        "Expenses can be recorded under the listed categories with amount/date/description.",
+        "Reports can be generated for monthly/termly/annual and profit & loss and are printable.",
+        "Charts/graphs render at least revenue vs expenses and outstanding fees trends (based on recorded data)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/finance/FinancePage.tsx",
+          "operation": "create",
+          "description": "Implement finance module dashboard with tabs/sections for revenue, expenses, receipts, and reports; restrict access to Headmaster/Accountant via RequireRole. Use shadcn-ui Tabs, Table, and Card components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/finance/FinancialRecordForm.tsx",
+          "operation": "create",
+          "description": "Add revenue/expense entry form with validation and computed fields (e.g., balance) on the client; show offline pending state when queued. Use shadcn-ui Form components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/finance/ReceiptPage.tsx",
+          "operation": "create",
+          "description": "Create printable receipt view for fee payments, with clear print action (browser print acceptable) and consistent layout."
+        },
+        {
+          "path": "frontend/src/pages/finance/ReportsPage.tsx",
+          "operation": "create",
+          "description": "Implement financial reports (monthly/termly/annual/profit & loss) with print-friendly layouts and at least two charts (revenue vs expenses; outstanding fees trend). Use shadcn-ui charts integration approach if available in the project patterns; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useFinance.ts",
+          "operation": "create",
+          "description": "Add react-query hooks for finance records CRUD and report derivations, with role-aware error handling and invalidation to update dashboard stats."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire Finance routes into sidebar navigation, visible and accessible only to Headmaster/Accountant."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Implement Exams Management UI (Headmaster + Exams Coordinator) for marks entry, computed totals/grades/positions, report cards, analytics, print, and PDF export.",
+      "acceptanceCriteria": [
+        "Only Headmaster and Exams Coordinator can access exams UI and backend methods.",
+        "Marks entry supports class, subject, continuous assessment, exam score; total is computed automatically.",
+        "Grade and position are computed automatically based on totals within the relevant class/assessment scope.",
+        "Report card can be generated per student and printed.",
+        "Class performance summary and subject analysis views are available.",
+        "PDF export produces a downloadable report card file."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/exams/ExamsPage.tsx",
+          "operation": "create",
+          "description": "Create exams module landing page with marks entry, record list, and access to reports; gate access to Headmaster/Exams Coordinator via RequireRole. Use shadcn-ui Tabs/Table/Form components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/exams/MarksEntryForm.tsx",
+          "operation": "create",
+          "description": "Implement marks entry form computing totals/grades locally for immediate UX feedback (while respecting backend as source of truth). Use shadcn-ui Form components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/exams/StudentReportCardPage.tsx",
+          "operation": "create",
+          "description": "Implement report card view per student with print and PDF export actions (PDF via client-side generation or print-to-PDF workflow), and clear English formatting."
+        },
+        {
+          "path": "frontend/src/pages/exams/AnalyticsPage.tsx",
+          "operation": "create",
+          "description": "Add class performance summary and subject analysis views with charts/tables derived from exam records. Use shadcn-ui chart/table patterns; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useExams.ts",
+          "operation": "create",
+          "description": "Add react-query hooks for exams records CRUD and per-student record queries with invalidation and role-aware error handling."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire Exams routes into sidebar navigation, visible and accessible only to Headmaster/Exams Coordinator."
+        }
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "summary": "Implement SMS module UI for composing individual/bulk messages, templates, simulated sending (if needed), and SMS history with status/timestamps.",
+      "acceptanceCriteria": [
+        "User can draft and 'send' an individual SMS to a selected student/parent target.",
+        "User can draft and 'send' bulk SMS to the listed recipient groups.",
+        "Message templates can be selected and inserted into the compose box.",
+        "Automated alerts can be generated for: fee payment confirmation, outstanding fee reminder, exam result notification, school announcements (at least as admin-triggerable events).",
+        "SMS history shows message, recipients/target group, delivery status, and timestamp.",
+        "If real SMS sending is not implemented, the UI explicitly indicates simulation and still records complete logs."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/sms/SMSPage.tsx",
+          "operation": "create",
+          "description": "Create SMS module screen with compose panel (individual + bulk groups), template picker, and a clearly labeled 'Send (Simulated)' mode when real sending is not available; record to SMS history via backend logging capability. Use shadcn-ui Tabs, Select, Textarea, and Table components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/sms/SMSTemplates.ts",
+          "operation": "create",
+          "description": "Add a small templates registry (fee confirmation, outstanding reminder, exam result notification, announcement) and helper to insert templates into compose input."
+        },
+        {
+          "path": "frontend/src/pages/sms/SMSHistoryPage.tsx",
+          "operation": "create",
+          "description": "Implement SMS history log with delivery status and timestamps, including filters by date/status/receiver group. Use shadcn-ui Table components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useSMS.ts",
+          "operation": "create",
+          "description": "Add react-query hooks for listing SMS logs and logging SMS sends (simulated or real), with optimistic UI for queued offline sends and eventual status updates."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire SMS routes into sidebar navigation with role-based visibility rules."
+        }
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "summary": "Implement offline-first UX: cached assets for offline load, view previously loaded data, queue offline mutations, and sync when connectivity returns.",
+      "acceptanceCriteria": [
+        "When the browser is offline, the app loads and allows navigation to key screens using cached assets.",
+        "Previously loaded records remain viewable while offline.",
+        "Creates/edits performed while offline are queued locally and visibly marked as pending.",
+        "When connectivity returns, queued actions sync and pending markers clear (or show errors if conflicts)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/sw.js",
+          "operation": "create",
+          "description": "Add a service worker that caches core app shell assets for offline load and supports basic runtime caching for key API responses where feasible."
+        },
+        {
+          "path": "frontend/src/main.tsx",
+          "operation": "modify",
+          "description": "Register the service worker on app startup and add a lightweight offline/online listener to trigger sync of queued actions when connectivity returns."
+        },
+        {
+          "path": "frontend/src/offline/offlineQueue.ts",
+          "operation": "create",
+          "description": "Implement a local queue (e.g., IndexedDB-backed) for create/edit actions performed offline, including metadata for module/entity, timestamps, and retry status."
+        },
+        {
+          "path": "frontend/src/offline/useOfflineStatus.ts",
+          "operation": "create",
+          "description": "Provide a hook to expose online/offline status and surface it in the UI (banner/badge) to indicate when actions will be queued."
+        },
+        {
+          "path": "frontend/src/offline/sync.ts",
+          "operation": "create",
+          "description": "Implement sync runner that replays queued actions against backend capabilities when online, marks items as synced, and records errors/conflicts for user review."
+        },
+        {
+          "path": "frontend/src/components/offline/PendingBadge.tsx",
+          "operation": "create",
+          "description": "Add a small UI indicator component to mark records/actions as pending sync in lists and detail pages. Use shadcn-ui Badge/Tooltip patterns; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useQueuedMutations.ts",
+          "operation": "create",
+          "description": "Create helper hooks/wrappers around module mutations to route changes to the offline queue when offline and to annotate react-query caches with pending markers."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Integrate offline status banner/indicator globally in the authenticated layout and ensure key screens can render from cached react-query data when offline."
+        }
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "summary": "Add backup/restore/export UI with authorization gating and a backup reminder in the UI.",
+      "acceptanceCriteria": [
+        "Authorized user can export system data into a downloadable file.",
+        "Authorized user can restore/import data from a previously exported file.",
+        "UI displays a backup reminder according to a configurable interval (default acceptable).",
+        "After restore, dashboard statistics reflect restored data."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/admin/BackupRestorePage.tsx",
+          "operation": "create",
+          "description": "Implement backup/export and restore/import UI, gated to authorized users (Headmaster). Provide download of exported dataset and file picker upload for restore; show clear warnings and success/error states. Use shadcn-ui Button, Alert, and Dialog components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useBackupRestore.ts",
+          "operation": "create",
+          "description": "Add react-query mutations for export/import, and on successful restore trigger cache invalidation so dashboard stats refresh."
+        },
+        {
+          "path": "frontend/src/components/admin/BackupReminderBanner.tsx",
+          "operation": "create",
+          "description": "Add a reminder banner/card shown on the dashboard according to a configurable interval stored locally (default acceptable), with a link to Backup/Restore."
+        },
+        {
+          "path": "frontend/src/pages/DashboardPage.tsx",
+          "operation": "modify",
+          "description": "Render the backup reminder component and ensure stats refetch after a restore completes."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire Backup/Restore route into navigation as Headmaster-only."
+        }
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "summary": "Implement security UX: Headmaster-only audit trail view, automatic logout after inactivity, and safe handling of sensitive data in the UI.",
+      "acceptanceCriteria": [
+        "Backend records an audit log entry for key actions (create/update/delete/print/export/restore) including user, role, action type, entity type/id, and timestamp.",
+        "UI provides an audit trail view accessible to Headmaster only.",
+        "Session auto-logout triggers after a period of inactivity and requires re-login.",
+        "Sensitive fields (e.g., passwords) are not stored in plaintext."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/admin/AuditTrailPage.tsx",
+          "operation": "create",
+          "description": "Create Headmaster-only audit log screen showing user, action, details, and timestamp with filters/search. Use shadcn-ui Table/Input components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useAuditLogs.ts",
+          "operation": "create",
+          "description": "Add react-query hook to fetch audit logs and handle authorization errors gracefully (Access Denied screen). Use authorization component error handling guidance; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/security/useAutoLogout.ts",
+          "operation": "create",
+          "description": "Implement inactivity timer that triggers logout after a configured period; reset timer on user interactions (mouse/keyboard/touch) and force return to login screen."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Integrate auto-logout hook at the top of the authenticated app, and wire Audit Trail route as Headmaster-only."
+        },
+        {
+          "path": "frontend/src/pages/LoginPage.tsx",
+          "operation": "modify",
+          "description": "Ensure password inputs are never persisted to local storage, and implement best-practice handling (no prefill, no logging) for sensitive fields."
+        }
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "summary": "Apply coherent, school-themed professional visual design with consistent layout/iconography and non-blue/purple primary palette.",
+      "acceptanceCriteria": [
+        "All major pages share a consistent layout with sidebar navigation and footer.",
+        "Buttons are large and clearly labeled; icons are used consistently for modules/actions.",
+        "Color palette and typography look school-professional and remain consistent across screens.",
+        "Primary palette does not rely on blue/purple as the dominant theme."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Define global theme variables and typography for a school-themed palette (avoid blue/purple dominance), plus consistent spacing and print styles for printable views."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Adjust Tailwind theme tokens (primary/secondary/sidebar/chart) to match the school-themed palette and maintain consistency across pages; avoid blue/purple as dominant primary."
+        },
+        {
+          "path": "frontend/src/components/layout/AppLayout.tsx",
+          "operation": "modify",
+          "description": "Ensure consistent page chrome (sidebar, headers, section titles, action bars) and large accessible controls across modules; keep responsive behavior for desktop/tablet."
+        },
+        {
+          "path": "frontend/src/components/layout/SidebarNav.tsx",
+          "operation": "modify",
+          "description": "Standardize module iconography and button sizing/labels for consistent navigation experience. Use shadcn-ui Button styles as composed (do not modify immutable ui component files); verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "summary": "Wire generated static image assets (logo placeholder + module icons) into dashboard and sidebar/module UI via frontend static assets.",
+      "acceptanceCriteria": [
+        "Generated images exist under frontend/public/assets/generated and are referenced by the UI.",
+        "Dashboard shows the logo placeholder image.",
+        "Sidebar/module tiles use the generated module icons."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/mfaps-logo-placeholder.dim_512x512.png",
+          "operation": "create",
+          "description": "Add the generated school logo placeholder emblem asset as a static file to be referenced by the UI."
+        },
+        {
+          "path": "frontend/public/assets/generated/icon-admissions.dim_128x128.png",
+          "operation": "create",
+          "description": "Add the generated Admissions module icon asset as a static file to be referenced by the UI."
+        },
+        {
+          "path": "frontend/public/assets/generated/icon-classes.dim_128x128.png",
+          "operation": "create",
+          "description": "Add the generated Classes module icon asset as a static file to be referenced by the UI."
+        },
+        {
+          "path": "frontend/public/assets/generated/icon-staff.dim_128x128.png",
+          "operation": "create",
+          "description": "Add the generated Staff module icon asset as a static file to be referenced by the UI."
+        },
+        {
+          "path": "frontend/public/assets/generated/icon-finance.dim_128x128.png",
+          "operation": "create",
+          "description": "Add the generated Finance module icon asset as a static file to be referenced by the UI."
+        },
+        {
+          "path": "frontend/public/assets/generated/icon-exams.dim_128x128.png",
+          "operation": "create",
+          "description": "Add the generated Exams module icon asset as a static file to be referenced by the UI."
+        },
+        {
+          "path": "frontend/public/assets/generated/icon-sms.dim_128x128.png",
+          "operation": "create",
+          "description": "Add the generated SMS module icon asset as a static file to be referenced by the UI."
+        },
+        {
+          "path": "frontend/src/components/assets/generatedImages.ts",
+          "operation": "create",
+          "description": "Centralize references to generated static images (logo placeholder and module icons) so components use consistent imports/paths."
+        },
+        {
+          "path": "frontend/src/pages/DashboardPage.tsx",
+          "operation": "modify",
+          "description": "Render the logo placeholder image from frontend/public/assets/generated/mfaps-logo-placeholder.dim_512x512.png and use module icons for dashboard quick navigation tiles."
+        },
+        {
+          "path": "frontend/src/components/layout/SidebarNav.tsx",
+          "operation": "modify",
+          "description": "Render module icons in the sidebar using generated assets: frontend/public/assets/generated/icon-admissions.dim_128x128.png, icon-classes.dim_128x128.png, icon-staff.dim_128x128.png, icon-finance.dim_128x128.png, icon-exams.dim_128x128.png, icon-sms.dim_128x128.png."
+        }
+      ]
+    }
+  ]
+}

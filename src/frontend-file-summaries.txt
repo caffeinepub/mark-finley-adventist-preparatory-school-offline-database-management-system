@@ -1,0 +1,23 @@
+{
+  "frontend/src/App.tsx": "Main application component with TanStack Router setup, authentication flow, and route definitions for all school management modules. Extracted root component to fix React hooks rules-of-hooks error.",
+  "frontend/src/pages/admissions/AdmissionsPage.tsx": "Admissions management page with student list, search, CRUD operations, and role-based access using AppRole enum and proper Link params typing.",
+  "frontend/src/pages/classes/ClassesPage.tsx": "Class management page with class list, student counts, search/filter, and export functionality using proper Link params typing for dynamic routes.",
+  "frontend/src/pages/classes/ParentsPage.tsx": "Parents list page displaying parent information with linked students, search capability, and export to CSV. Fixed transform class warning.",
+  "frontend/src/pages/staff/StaffDirectoryPage.tsx": "Staff directory page with searchable staff list, CRUD operations, and role-based access using AppRole enum and proper Link params typing.",
+  "frontend/src/security/useAutoLogout.ts": "Custom hook implementing automatic logout after 30 minutes of user inactivity with event listeners for mouse, keyboard, scroll, and touch events.",
+  "frontend/src/offline/useOfflineStatus.ts": "Custom hook tracking online/offline status using browser navigator API and window event listeners.",
+  "frontend/src/components/offline/OfflineStatusBanner.tsx": "Banner component displaying offline status alert when network connection is lost.",
+  "frontend/src/components/admin/BackupReminderBanner.tsx": "Reminder banner component prompting users to backup data every 7 days with dismiss functionality.",
+  "frontend/src/utils/export.ts": "Utility function for exporting data arrays to CSV format with proper escaping and download handling.",
+  "frontend/src/components/sms/SMSTemplates.ts": "SMS message templates for fee payments, reminders, exam results, and announcements with placeholder replacement functionality.",
+  "frontend/src/pages/sms/SMSPage.tsx": "SMS notification page with individual and bulk messaging capabilities, template selection, and simulated sending.",
+  "frontend/src/pages/sms/SMSHistoryPage.tsx": "SMS history page displaying log of all sent messages with timestamps, receivers, and delivery status.",
+  "frontend/src/pages/admin/UserManagementPage.tsx": "User management page for headmaster with user CRUD operations, role assignment using AppRole enum, and proper role-based access control.",
+  "frontend/src/components/admin/UserFormDialog.tsx": "Dialog component for creating new users with principal ID, name, and role selection using AppRole enum values.",
+  "frontend/src/pages/admin/BackupRestorePage.tsx": "Backup and restore page for exporting/importing system data with role-based access using AppRole enum.",
+  "frontend/src/pages/admin/AuditTrailPage.tsx": "Audit trail page displaying system activity logs with role-based access using AppRole enum for headmaster-only viewing.",
+  "frontend/src/components/auth/RequireRole.tsx": "Role-based access control component that checks user permissions and displays access denied message for unauthorized users. Uses AppRole enum from backend interface.",
+  "frontend/src/pages/finance/FinancePage.tsx": "Finance management page with revenue/expense tracking, role-based access using AppRole enum, and proper Link params typing for receipts.",
+  "frontend/src/pages/exams/ExamsPage.tsx": "Exams management page with marks entry, role-based access using AppRole enum, and proper Link params typing for report cards.",
+  "frontend/src/index.css": "Global CSS file with Tailwind directives, OKLCH-based color system for light/dark themes using warm earth tones (browns/tans) for a professional school aesthetic, and print media utilities."
+}

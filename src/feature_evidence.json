@@ -1,0 +1,328 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-implement-secure-role-based-authentication-with-the-roles-headmaster-accountant-and-exams-coordinator-including-username-password-login-change-password-logout-and-role-based-access-enforcement-across-all-modules",
+      "featureTitle": "Implement secure role-based authentication with the roles Headmaster, Accountant, and Exams Coordinator, including username/password login, change password, logout, and role-based access enforcement across all modules.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/auth/LogoutButton.tsx",
+        "frontend/src/components/auth/RequireRole.tsx",
+        "frontend/src/hooks/useActor.ts",
+        "frontend/src/hooks/useCurrentUser.ts",
+        "frontend/src/pages/ChangePasswordPage.tsx",
+        "frontend/src/pages/LoginPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-headmaster-only-user-management-to-create-edit-disable-and-reset-passwords-for-system-users-assigning-one-of-the-supported-roles-to-each-user",
+      "featureTitle": "Add Headmaster-only user management to create, edit, disable, and reset passwords for system users, assigning one of the supported roles to each user.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/admin/UserFormDialog.tsx",
+        "frontend/src/pages/admin/UserManagementPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-the-post-login-main-dashboard-with-school-branding-placeholders-and-quick-statistics-plus-a-sidebar-navigation-with-large-buttons-and-module-icons",
+      "featureTitle": "Create the post-login main dashboard with school branding placeholders and quick statistics, plus a sidebar navigation with large buttons and module icons.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/layout/AppLayout.tsx",
+        "frontend/src/components/layout/Footer.tsx",
+        "frontend/src/components/layout/SidebarNav.tsx",
+        "frontend/src/hooks/useDashboardStats.ts",
+        "frontend/src/pages/DashboardPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-admission-management-module-with-a-new-admission-crud-including-auto-generated-student-id-parent-details-photo-upload-search-and-printable-student-record-b-transfer-workflow-and-c-dismissal-workflow-including-an-approval-section",
+      "featureTitle": "Implement Admission Management module with (A) New Admission CRUD including auto-generated Student ID, parent details, photo upload, search, and printable student record; (B) Transfer workflow; and (C) Dismissal workflow including an approval section.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/files/PhotoUploader.tsx",
+        "frontend/src/pages/admissions/AdmissionsPage.tsx",
+        "frontend/src/pages/admissions/StudentDetailPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-class-management-module-with-class-list-class-name-class-teacher-student-list-total-count-and-parents-list-parent-name-phone-number-linked-students-address-including-search-filter-printable-class-list-and-export-to-pdf-excel",
+      "featureTitle": "Implement Class Management module with class list (class name, class teacher, student list, total count) and parents list (parent name, phone number, linked students, address), including search/filter, printable class list, and export to PDF/Excel.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/classes/ClassDetailPage.tsx",
+        "frontend/src/pages/classes/ClassesPage.tsx",
+        "frontend/src/pages/classes/ParentsPage.tsx",
+        "frontend/src/utils/export.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-staff-management-module-with-staff-crud-including-photo-upload-staff-transfer-records-staff-dismissal-records-and-a-searchable-staff-directory",
+      "featureTitle": "Implement Staff Management module with staff CRUD (including photo upload), staff transfer records, staff dismissal records, and a searchable staff directory.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/staff/StaffDetailPage.tsx",
+        "frontend/src/pages/staff/StaffDirectoryPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-finance-management-module-headmaster-accountant-only-to-record-revenue-school-fees-canteen-collection-school-store-sales-track-expenses-generate-receipts-for-school-fee-payments-and-produce-financial-reports-monthly-termly-annual-profit-loss-including-printable-reports-and-charts-graphs",
+      "featureTitle": "Implement Finance Management module (Headmaster + Accountant only) to record revenue (school fees, canteen collection, school store sales), track expenses, generate receipts for school fee payments, and produce financial reports (monthly, termly, annual, profit & loss) including printable reports and charts/graphs.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/finance/FinancePage.tsx",
+        "frontend/src/pages/finance/ReceiptPage.tsx",
+        "frontend/src/pages/finance/ReportsPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-exams-management-module-headmaster-exams-coordinator-only-for-marks-recording-with-auto-calculated-totals-grades-positions-remarks-and-report-generation-including-student-report-card-class-performance-summary-subject-analysis-printable-report-cards-and-export-to-pdf",
+      "featureTitle": "Implement Exams Management module (Headmaster + Exams Coordinator only) for marks recording with auto-calculated totals, grades, positions, remarks, and report generation including student report card, class performance summary, subject analysis, printable report cards, and export to PDF.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/exams/AnalyticsPage.tsx",
+        "frontend/src/pages/exams/ExamsPage.tsx",
+        "frontend/src/pages/exams/StudentReportCardPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-sms-notification-module-ui-and-backend-logging-support-composing-individual-and-bulk-messages-to-targeted-groups-entire-class-all-parents-students-with-outstanding-fees-templates-automated-alert-triggers-sms-history-log-delivery-status-and-date-time-sent-where-direct-sending-is-not-possible-in-browser-provide-a-clearly-labeled-send-simulated-mode-that-records-to-history-and-marks-status-accordingly",
+      "featureTitle": "Add SMS Notification module UI and backend logging: support composing individual and bulk messages to targeted groups (entire class, all parents, students with outstanding fees), templates, automated alert triggers, SMS history log, delivery status, and date/time sent. Where direct sending is not possible in-browser, provide a clearly labeled 'Send (Simulated)' mode that records to history and marks status accordingly.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/sms/SMSTemplates.ts",
+        "frontend/src/pages/sms/SMSHistoryPage.tsx",
+        "frontend/src/pages/sms/SMSPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-9"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-offline-first-behavior-suitable-for-a-local-deployment-the-frontend-must-remain-usable-without-an-internet-connection-for-viewing-previously-loaded-data-and-for-queuing-data-entry-actions-and-must-sync-queued-actions-when-connectivity-is-restored",
+      "featureTitle": "Implement offline-first behavior suitable for a local deployment: the frontend must remain usable without an internet connection for viewing previously loaded data and for queuing data-entry actions, and must sync queued actions when connectivity is restored.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/main.tsx",
+        "frontend/src/offline/useOfflineStatus.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-10"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-backup-restore-and-export-features-allow-an-authorized-user-to-export-the-full-dataset-to-a-file-restore-from-an-exported-file-and-show-a-backup-reminder-in-the-ui",
+      "featureTitle": "Add backup, restore, and export features: allow an authorized user to export the full dataset to a file, restore from an exported file, and show a backup reminder in the UI.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/admin/BackupReminderBanner.tsx",
+        "frontend/src/pages/DashboardPage.tsx",
+        "frontend/src/pages/admin/BackupRestorePage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-11"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-security-features-role-based-permissions-enforced-in-backend-audit-trail-of-user-activities-across-modules-automatic-logout-after-inactivity-and-encryption-of-sensitive-stored-data-where-feasible-within-the-platform",
+      "featureTitle": "Implement security features: role-based permissions (enforced in backend), audit trail of user activities across modules, automatic logout after inactivity, and encryption of sensitive stored data where feasible within the platform.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/LoginPage.tsx",
+        "frontend/src/pages/admin/AuditTrailPage.tsx",
+        "frontend/src/security/useAutoLogout.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-12"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-apply-a-coherent-professional-school-themed-visual-design-across-the-app-colors-typography-layout-with-sidebar-navigation-clear-section-headers-and-consistent-iconography-do-not-use-a-blue-purple-primary-palette",
+      "featureTitle": "Apply a coherent, professional school-themed visual design across the app (colors, typography, layout) with sidebar navigation, clear section headers, and consistent iconography; do not use a blue/purple primary palette.",
+      "files": [
+        "frontend/src/components/layout/AppLayout.tsx",
+        "frontend/src/components/layout/SidebarNav.tsx",
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-14"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-generated-static-image-assets-for-a-logo-placeholder-and-module-icons-and-render-them-from-frontend-static-assets-do-not-serve-images-through-the-backend",
+      "featureTitle": "Add generated static image assets for a logo placeholder and module icons, and render them from frontend static assets (do not serve images through the backend).",
+      "files": [
+        "frontend/src/components/layout/SidebarNav.tsx",
+        "frontend/src/pages/DashboardPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-15"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

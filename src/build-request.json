@@ -1,0 +1,346 @@
+{
+  "kind": "build_request",
+  "title": "Offline-first School Database Management System with Role-Based Access for Mark Finley Adventist Preparatory School",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Implement secure role-based authentication with the roles Headmaster, Accountant, and Exams Coordinator, including username/password login, change password, logout, and role-based access enforcement across all modules.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a secure login system with the following roles: 1️⃣ Headmaster ... 2️⃣ Accountant ... 3️⃣ Exams Coordinator ... Include: • Username & password • Change password • Logout button • Role-based dashboard view"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can log in using username and password.",
+        "User can change their password and then log in with the new password.",
+        "User can log out and is returned to the login screen.",
+        "Headmaster can access all modules and all CRUD/report actions.",
+        "Accountant can only access Finance module screens and related API methods; all other modules are blocked/hidden.",
+        "Exams Coordinator can only access Exams module screens and related API methods; all other modules are blocked/hidden.",
+        "Unauthorized API calls are rejected on the backend based on role (not just hidden in the UI)."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Add Headmaster-only user management to create, edit, disable, and reset passwords for system users, assigning one of the supported roles to each user.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Headmaster ... Can manage users"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Headmaster can create a new user with username, initial password, and role.",
+        "Headmaster can edit a user's role and enable/disable the account.",
+        "Headmaster can reset a user's password.",
+        "Non-Headmaster roles cannot access user management UI or backend methods."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Create the post-login main dashboard with school branding placeholders and quick statistics, plus a sidebar navigation with large buttons and module icons.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "🏫 MAIN DASHBOARD Display after login: • School name & logo placeholder • Welcome message • Quick statistics: o Total Students o Total Staff o Total Classes o Fees Collected o Outstanding Fees • Navigation sidebar with buttons",
+          "🎨 DESIGN REQUIREMENTS • Clean professional layout • Sidebar navigation • Large clickable buttons • Icons for each module • School-themed colors • Footer with school contact details • Responsive for desktop and tablet"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Dashboard displays: 'Mark Finley Adventist Preparatory School' and a logo placeholder area.",
+        "Dashboard shows welcome message including the logged-in user role/name.",
+        "Dashboard shows the listed statistics and updates when underlying data changes.",
+        "Sidebar shows navigation items for the modules permitted by the current user's role.",
+        "UI is responsive for desktop and tablet and uses large, clearly labeled buttons with icons.",
+        "Footer shows: location, postal address, email, headmaster name, and telephone as provided by the user."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Implement Admission Management module with (A) New Admission CRUD including auto-generated Student ID, parent details, photo upload, search, and printable student record; (B) Transfer workflow; and (C) Dismissal workflow including an approval section.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "📌 MODULE 1: ADMISSION MANAGEMENT A. New Admission • Student ID (auto-generated) • Full name • Gender • Date of birth • Class admitted • Parent details (name, phone, address, email) • Previous school • Admission date • Upload photo Buttons: Save | Edit | Delete | Print | Search B. Transfer ... C. Dismissal ... • Approval section"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Creating a student auto-generates a unique Student ID.",
+        "Student record supports fields listed in the request including storing a photo.",
+        "User can Save/Edit/Delete/Search student admissions (subject to role permissions; Headmaster full access).",
+        "Print action produces a printable student admission profile view (browser print is acceptable).",
+        "Transfer records can be created and viewed with: student name, class, transfer date, destination, reason.",
+        "Dismissal records can be created and viewed with: student name, class, date, reason, and an approval section captured/stored."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Implement Class Management module with class list (class name, class teacher, student list, total count) and parents list (parent name, phone number, linked students, address), including search/filter, printable class list, and export to PDF/Excel.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "📚 MODULE 2: CLASS MANAGEMENT A. Class List • Class name • Class teacher • List of students • Total count B. Parents List • Parent name • Phone number • Linked student(s) • Address Features: • Print class list • Export to PDF/Excel • Search & filter"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can create/edit/view classes and assign a class teacher.",
+        "Class detail view displays student list and total count.",
+        "Parents list view shows each parent and linked student(s).",
+        "Search and filtering work on class list and parents list.",
+        "Print class list produces a printer-friendly layout.",
+        "Export functions produce downloadable files for PDF and Excel-compatible format (e.g., .csv for Excel)."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Implement Staff Management module with staff CRUD (including photo upload), staff transfer records, staff dismissal records, and a searchable staff directory.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "👩‍🏫 MODULE 3: STAFF MANAGEMENT A. New Staff ... • Photo upload B. Transfer Staff ... C. Dismissal ... Include staff search and directory."
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can create/edit/delete/view staff records with all requested fields including photo.",
+        "User can record staff transfers with from/to position and date.",
+        "User can record staff dismissals with date and reason.",
+        "Staff directory supports search (by name and position at minimum)."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Implement Finance Management module (Headmaster + Accountant only) to record revenue (school fees, canteen collection, school store sales), track expenses, generate receipts for school fee payments, and produce financial reports (monthly, termly, annual, profit & loss) including printable reports and charts/graphs.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "💰 MODULE 4: FINANCE MANAGEMENT (Accessible ONLY by Accountant & Headmaster) ... Revenue Collection ... Expenses Tracking ... Financial Reporting Generate: • Monthly accounts • Termly accounts • Annual financial statement • Profit & loss report • Printable reports • Charts and graphs"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Only Headmaster and Accountant can access finance UI and backend methods.",
+        "School fees records store amount due, amount paid, auto-calculated balance, payment date, and link to a student/class.",
+        "Receipt view can be generated for a fee payment and printed.",
+        "Canteen and store entries support daily records and monthly summaries.",
+        "Expenses can be recorded under the listed categories with amount/date/description.",
+        "Reports can be generated for monthly/termly/annual and profit & loss and are printable.",
+        "Charts/graphs render at least revenue vs expenses and outstanding fees trends (based on recorded data)."
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Implement Exams Management module (Headmaster + Exams Coordinator only) for marks recording with auto-calculated totals, grades, positions, remarks, and report generation including student report card, class performance summary, subject analysis, printable report cards, and export to PDF.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "📝 MODULE 5: EXAMS MANAGEMENT (Accessible ONLY by Exams Coordinator & Headmaster) Marks Recording ... • Total (auto-calculated) • Grade (auto-calculated) • Position (auto-calculated) ... Reports ... • Printable report cards • Export to PDF"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Only Headmaster and Exams Coordinator can access exams UI and backend methods.",
+        "Marks entry supports class, subject, continuous assessment, exam score; total is computed automatically.",
+        "Grade and position are computed automatically based on totals within the relevant class/assessment scope.",
+        "Report card can be generated per student and printed.",
+        "Class performance summary and subject analysis views are available.",
+        "PDF export produces a downloadable report card file."
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "Add SMS Notification module UI and backend logging: support composing individual and bulk messages to targeted groups (entire class, all parents, students with outstanding fees), templates, automated alert triggers, SMS history log, delivery status, and date/time sent. Where direct sending is not possible in-browser, provide a clearly labeled 'Send (Simulated)' mode that records to history and marks status accordingly.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "📩 MODULE 6: SMS NOTIFICATION SYSTEM ... Via GSM modem OR integrated SMS API (when internet is available) ... Include: • SMS history log • Delivery status • Date & time sent"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can draft and 'send' an individual SMS to a selected student/parent target.",
+        "User can draft and 'send' bulk SMS to the listed recipient groups.",
+        "Message templates can be selected and inserted into the compose box.",
+        "Automated alerts can be generated for: fee payment confirmation, outstanding fee reminder, exam result notification, school announcements (at least as admin-triggerable events).",
+        "SMS history shows message, recipients/target group, delivery status, and timestamp.",
+        "If real SMS sending is not implemented, the UI explicitly indicates simulation and still records complete logs."
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "text": "Implement offline-first behavior suitable for a local deployment: the frontend must remain usable without an internet connection for viewing previously loaded data and for queuing data-entry actions, and must sync queued actions when connectivity is restored.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "💻 OFFLINE FUNCTIONALITY REQUIREMENTS The system must: • Run without internet connection • Store data in local database ... • Support LAN setup for multiple users within school"
+        ]
+      },
+      "acceptanceCriteria": [
+        "When the browser is offline, the app loads and allows navigation to key screens using cached assets.",
+        "Previously loaded records remain viewable while offline.",
+        "Creates/edits performed while offline are queued locally and visibly marked as pending.",
+        "When connectivity returns, queued actions sync and pending markers clear (or show errors if conflicts)."
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "text": "Add backup, restore, and export features: allow an authorized user to export the full dataset to a file, restore from an exported file, and show a backup reminder in the UI.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Include backup and restore feature • Allow data export to external drive • Provide system restore option ... • Database backup reminder"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Authorized user can export system data into a downloadable file.",
+        "Authorized user can restore/import data from a previously exported file.",
+        "UI displays a backup reminder according to a configurable interval (default acceptable).",
+        "After restore, dashboard statistics reflect restored data."
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "text": "Implement security features: role-based permissions (enforced in backend), audit trail of user activities across modules, automatic logout after inactivity, and encryption of sensitive stored data where feasible within the platform.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "🔒 SECURITY FEATURES • Role-based permissions • Data encryption • Audit trail (track user activities) • Automatic logout after inactivity"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend records an audit log entry for key actions (create/update/delete/print/export/restore) including user, role, action type, entity type/id, and timestamp.",
+        "UI provides an audit trail view accessible to Headmaster only.",
+        "Session auto-logout triggers after a period of inactivity and requires re-login.",
+        "Sensitive fields (e.g., passwords) are not stored in plaintext."
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "text": "Model and persist data with proper relationships between Students, Parents, Classes, Staff, Finance records, Exams, and SMS logs, ensuring data integrity and scalable querying for dashboards and reports.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "⚙️ TECHNICAL STRUCTURE Create proper database relationships between: • Students • Parents • Classes • Staff • Finance records • Exams • SMS logs Ensure scalability, data integrity, and easy maintenance."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend exposes CRUD/query methods to support all module screens.",
+        "Student-to-parent linking supports one parent linked to multiple students and students linked to one or more parents as needed.",
+        "Finance and exams records are linked to students and classes.",
+        "SMS logs are linked to recipient group metadata and (when applicable) to student/parent references.",
+        "Dashboard statistics can be computed from stored records."
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "text": "Apply a coherent, professional school-themed visual design across the app (colors, typography, layout) with sidebar navigation, clear section headers, and consistent iconography; do not use a blue/purple primary palette.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "🎨 DESIGN REQUIREMENTS • Clean professional layout • Sidebar navigation • Large clickable buttons • Icons for each module • School-themed colors • Footer with school contact details • Responsive for desktop and tablet"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All major pages share a consistent layout with sidebar navigation and footer.",
+        "Buttons are large and clearly labeled; icons are used consistently for modules/actions.",
+        "Color palette and typography look school-professional and remain consistent across screens.",
+        "Primary palette does not rely on blue/purple as the dominant theme."
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "text": "Add generated static image assets for a logo placeholder and module icons, and render them from frontend static assets (do not serve images through the backend).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "School name & logo placeholder",
+          "Icons for each module"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Generated images exist under frontend/public/assets/generated and are referenced by the UI.",
+        "Dashboard shows the logo placeholder image.",
+        "Sidebar/module tiles use the generated module icons."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor (all logic in backend/main.mo); do not introduce additional backend services.",
+    "Do not edit files under frontend/src/components/ui or other immutable paths listed in SYSTEM_CONTEXT; compose them instead.",
+    "User-facing text in the app must be in English.",
+    "Direct integration with MySQL/SQLite, Windows installers, and true offline LAN multi-user server deployment are outside the Internet Computer hosting model; implement best-effort offline-first behavior within the React app and canister persistence within platform limits.",
+    "Direct GSM modem SMS sending is not reliably supported in a browser/canister-only app; if not feasible, implement SMS composition + logging + simulated sending and clearly label it."
+  ],
+  "nonGoals": [
+    "Building a native Windows desktop installer (.exe/.msi).",
+    "Integrating third-party authentication providers other than Internet Identity.",
+    "Implementing real-time features via WebSockets/push notifications.",
+    "Integrating external databases such as MySQL/SQLite/PostgreSQL/MongoDB.",
+    "Guaranteeing fully offline operation with multi-user LAN synchronization without any network connectivity to the backend."
+  ],
+  "imageRequirements": {
+    "required": [
+      "School logo placeholder emblem, clean academic style (mfaps-logo-placeholder.dim_512x512.png)",
+      "Admission module icon, school admissions theme (icon-admissions.dim_128x128.png)",
+      "Classes module icon, classroom/book theme (icon-classes.dim_128x128.png)",
+      "Staff module icon, teacher/staff theme (icon-staff.dim_128x128.png)",
+      "Finance module icon, accounting/money theme (icon-finance.dim_128x128.png)",
+      "Exams module icon, exam/paper theme (icon-exams.dim_128x128.png)",
+      "SMS module icon, messaging theme (icon-sms.dim_128x128.png)"
+    ],
+    "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
+  }
+}
